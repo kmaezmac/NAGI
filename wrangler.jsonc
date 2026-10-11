@@ -1,0 +1,9 @@
+{
+  // Static site on Cloudflare Workers (static assets only, no Worker script).
+  // public/_headers is copied into dist and applied by Workers static assets.
+  "name": "nagi",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}

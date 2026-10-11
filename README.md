@@ -81,12 +81,14 @@ Git連携で公開し、以下を設定してください。
 | Root directory | package.jsonのある場所。リポジトリ直下なら空欄 |
 | Node.js | `24`（必要なら環境変数NODE_VERSION） |
 
-`public/_headers`はdistへコピーされます。Workersやwrangler.jsoncは不要です。
+`public/_headers`はdistへコピーされます。
+
+**Workers（Workers Builds）で作成した場合**：デプロイコマンドが`npx wrangler deploy`になります。同梱の`wrangler.jsonc`が`dist`を静的アセットとして配信するため、そのまま動きます（`_headers`も適用されます）。
 
 ### Google Analytics 4
 
 1. GA4でプロパティとWebデータストリームを作成し、測定ID（`G-XXXXXXX`）を控える。
-2. Cloudflare Pagesの Settings → Environment variables に `VITE_GA_ID=G-XXXXXXX` を追加し、再デプロイ（ビルド時に埋め込まれます）。ローカルでは`.env`に同じ行を書きます（`.env.example`参照）。
+2. Pagesなら Settings → Environment variables、Workersなら Settings → Build → **Build variables and secrets** に `VITE_GA_ID=G-XXXXXXX` を追加し、再デプロイ（ビルド時に埋め込まれるため、実行時の Variables では効きません）。ローカルでは`.env`に同じ行を書きます（`.env.example`参照）。
 3. 未設定ならgtag.jsは読み込まれません。CSPは`_headers`でGoogleのドメインのみ許可済み。
 
 送信イベント：ページビュー、`wake_start`（`minutes`：0は無期限、`pip`：1/0）、`wake_stop`。PiPウィンドウ内では計測しません。公開前に[PRIVACY.md](PRIVACY.md)の記載を確認してください。Zaraz等の他のスクリプト注入はCSPに合わないため有効にしないでください。本番ヘッダーの施行は公開後に確認します。Vite dev／previewは_headersを適用しません。
